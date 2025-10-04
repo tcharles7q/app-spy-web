@@ -1,8 +1,5 @@
 {
-  "name": "SpyWeb - Real-time Screen Mirroring",
-  "description": "A web dashboard for real-time, discreet screen and audio mirroring from mobile devices. Designed as a white-label solution for security, IT support, and device management companies.",
-  "requestFramePermissions": [
-    "camera",
-    "microphone"
-  ]
+  "name": "Guardian Setup",
+  "description": "Guia interativo para pais e responsáveis sobre como configurar, com segurança e consentimento, o aplicativo de monitoramento de conversas.",
+  "requestFramePermissions": []
 }

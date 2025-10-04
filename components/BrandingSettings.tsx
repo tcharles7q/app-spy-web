@@ -11,7 +11,8 @@ const BrandingSettings: React.FC = () => {
         return null; // or a loading state
     }
 
-    const { branding, setBranding } = context as BrandingContextType;
+    // FIX: Remove redundant type assertion as the type is narrowed by the null check above.
+    const { branding, setBranding } = context;
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;

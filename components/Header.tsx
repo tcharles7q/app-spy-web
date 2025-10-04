@@ -4,7 +4,12 @@ import { BrandingContext } from '../App';
 import { BrandingContextType } from '../types';
 
 const Header: React.FC = () => {
-    const { branding } = useContext(BrandingContext) as BrandingContextType;
+    // FIX: Add a null check for the context to prevent runtime errors.
+    const context = useContext(BrandingContext);
+    if (!context) {
+        return null;
+    }
+    const { branding } = context;
 
     const colorVariants = {
         indigo: 'text-indigo-400',

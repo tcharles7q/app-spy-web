@@ -9,7 +9,12 @@ interface ConsentModalProps {
 }
 
 const ConsentModal: React.FC<ConsentModalProps> = ({ onAccept }) => {
-    const { branding } = useContext(BrandingContext) as BrandingContextType;
+    // FIX: Add a null check for the context to prevent runtime errors.
+    const context = useContext(BrandingContext);
+    if (!context) {
+        return null;
+    }
+    const { branding } = context;
     
     const colorVariants = {
         indigo: 'bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500',

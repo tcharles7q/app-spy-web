@@ -1,17 +1,33 @@
-
 import React, { useContext } from 'react';
 import { Device, BrandingContextType } from '../types';
 import { BrandingContext } from '../App';
-import { PlayIcon, StopIcon, MicOffIcon, CameraIcon, ChevronDownIcon } from './Icons';
+import { PlayIcon, StopIcon, MicOffIcon, MicOnIcon, CameraIcon, ChevronDownIcon, RecordIcon } from './Icons';
 
 interface ControlsPanelProps {
     device: Device;
     isMirroring: boolean;
     onToggleMirroring: () => void;
+    isMuted: boolean;
+    onToggleMute: () => void;
+    isRecording: boolean;
+    onToggleRecording: () => void;
 }
 
-const ControlsPanel: React.FC<ControlsPanelProps> = ({ device, isMirroring, onToggleMirroring }) => {
-    const { branding } = useContext(BrandingContext) as BrandingContextType;
+const ControlsPanel: React.FC<ControlsPanelProps> = ({ 
+    device, 
+    isMirroring, 
+    onToggleMirroring,
+    isMuted,
+    onToggleMute,
+    isRecording,
+    onToggleRecording
+}) => {
+    // FIX: Add a null check for the context to prevent runtime errors.
+    const context = useContext(BrandingContext);
+    if (!context) {
+        return null;
+    }
+    const { branding } = context;
 
     const colorVariants = {
         indigo: { base: 'bg-indigo-500 hover:bg-indigo-600', text: 'text-indigo-300', ring: 'ring-indigo-500', border: 'border-indigo-700' },
@@ -29,12 +45,34 @@ const ControlsPanel: React.FC<ControlsPanelProps> = ({ device, isMirroring, onTo
                 <span className={`text-sm ${colors.text}`}>{isMirroring ? 'Session Active' : 'Ready to Connect'}</span>
             </div>
             <div className="flex items-center space-x-2">
-                <button className="bg-gray-800 hover:bg-gray-700 text-gray-300 p-2.5 rounded-lg transition-colors">
-                    <MicOffIcon className="h-5 w-5" />
+                <button
+                    onClick={onToggleMute}
+                    disabled={!isMirroring}
+                    aria-label={isMuted ? 'Unmute microphone' : 'Mute microphone'}
+                    className={`p-2.5 rounded-lg transition-colors ${
+                        !isMirroring 
+                        ? 'bg-gray-800 text-gray-600 cursor-not-allowed' 
+                        : isMuted 
+                            ? 'bg-gray-800 hover:bg-gray-700 text-gray-300' 
+                            : `${colors.base} text-white shadow-lg`
+                    }`}>
+                    {isMuted ? <MicOffIcon className="h-5 w-5" /> : <MicOnIcon className="h-5 w-5" />}
+                </button>
+                <button
+                    onClick={onToggleRecording}
+                    disabled={!isMirroring}
+                    aria-label={isRecording ? 'Stop recording' : 'Start recording'}
+                    className={`p-2.5 rounded-lg transition-colors ${
+                        isMirroring 
+                        ? 'bg-gray-800 hover:bg-gray-700' 
+                        : 'bg-gray-800 text-gray-600 cursor-not-allowed'
+                    }`}>
+                     <RecordIcon className={`h-5 w-5 transition-colors ${isRecording ? 'text-red-500 animate-pulse' : 'text-gray-400'}`} />
                 </button>
                 <button className="bg-gray-800 hover:bg-gray-700 text-gray-300 p-2.5 rounded-lg transition-colors">
                     <CameraIcon className="h-5 w-5" />
                 </button>
+                <div className="h-6 w-px bg-gray-700 mx-1"></div>
                 <div className="relative">
                     <button className="bg-gray-800 hover:bg-gray-700 text-gray-300 p-2.5 rounded-lg transition-colors flex items-center">
                         <span className="text-sm mr-1">High Quality</span> <ChevronDownIcon className="h-4 w-4" />

@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 // Props for all icons
@@ -26,6 +25,14 @@ export const StopIcon: React.FC<IconProps> = (props) => (
 
 export const MicOffIcon: React.FC<IconProps> = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-11.25L5.25 6m-2.25 2.25L5.25 6m0 0L3 8.25m2.25-2.25L7.5 6m0 4.5v.75A7.5 7.5 0 0015 18.375a7.5 7.5 0 007.5-7.5v-.75" /></svg>
+);
+
+export const MicOnIcon: React.FC<IconProps> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" {...props}><path d="M7 4a3 3 0 016 0v6a3 3 0 11-6 0V4z" /><path d="M5.5 10.5a.5.5 0 00-1 0v.5a5.5 5.5 0 0011 0v-.5a.5.5 0 00-1 0v.5a4.5 4.5 0 01-9 0v-.5z" /><path d="M10 16a.5.5 0 00-.5.5v1.5a.5.5 0 001 0v-1.5A.5.5 0 0010 16z" /></svg>
+);
+
+export const RecordIcon: React.FC<IconProps> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" {...props}><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16z" clipRule="evenodd" /></svg>
 );
 
 export const CameraIcon: React.FC<IconProps> = (props) => (

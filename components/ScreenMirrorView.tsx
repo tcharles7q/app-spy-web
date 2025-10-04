@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useContext, useMemo } from 'react';
 import { Device, DeviceStatus, BrandingContextType } from '../types';
 import { BrandingContext } from '../App';
@@ -13,7 +12,11 @@ interface ScreenMirrorViewProps {
 const ScreenMirrorView: React.FC<ScreenMirrorViewProps> = ({ device, onUpdateDeviceStatus }) => {
     const [interactionPoint, setInteractionPoint] = useState<{ x: number; y: number } | null>(null);
     const screenRef = useRef<HTMLDivElement>(null);
-    const { branding } = useContext(BrandingContext) as BrandingContextType;
+    // FIX: Add a null check for the context to prevent runtime errors.
+    const context = useContext(BrandingContext);
+    
+    const [isMuted, setIsMuted] = useState(true);
+    const [isRecording, setIsRecording] = useState(false);
     
     const isMirroring = device?.status === DeviceStatus.Mirroring;
 
@@ -29,8 +32,23 @@ const ScreenMirrorView: React.FC<ScreenMirrorViewProps> = ({ device, onUpdateDev
     const toggleMirroring = () => {
         if (device) {
             const newStatus = isMirroring ? DeviceStatus.Online : DeviceStatus.Mirroring;
+            if (newStatus === DeviceStatus.Online) {
+                // Reset audio states when stopping
+                setIsRecording(false);
+                setIsMuted(true);
+            }
             onUpdateDeviceStatus(device.id, newStatus);
         }
+    };
+
+    const toggleMute = () => {
+        if (!isMirroring) return;
+        setIsMuted(prev => !prev);
+    };
+
+    const toggleRecording = () => {
+        if (!isMirroring) return;
+        setIsRecording(prev => !prev);
     };
 
     const colorVariants = {
@@ -39,6 +57,11 @@ const ScreenMirrorView: React.FC<ScreenMirrorViewProps> = ({ device, onUpdateDev
         emerald: { bg: 'bg-emerald-500', text: 'text-emerald-300', ring: 'ring-emerald-500' },
         rose: { bg: 'bg-rose-500', text: 'text-rose-300', ring: 'ring-rose-500' },
     };
+
+    if (!context) {
+        return null; // or a loading/error state
+    }
+    const { branding } = context;
 
     const colors = colorVariants[branding.primaryColor];
 
@@ -92,6 +115,10 @@ const ScreenMirrorView: React.FC<ScreenMirrorViewProps> = ({ device, onUpdateDev
                     device={device}
                     isMirroring={isMirroring}
                     onToggleMirroring={toggleMirroring}
+                    isMuted={isMuted}
+                    onToggleMute={toggleMute}
+                    isRecording={isRecording}
+                    onToggleRecording={toggleRecording}
                 />
             </div>
         </div>
